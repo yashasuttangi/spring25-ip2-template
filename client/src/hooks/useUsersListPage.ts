@@ -36,11 +36,9 @@ const useUsersListPage = () => {
      * @param user the user to remove
      * @returns a list without the given user
      */
-    const removeUserFromList = (prevUserList: User[], user: User) => {
+    const removeUserFromList = (prevUserList: User[], user: User) =>
       // TODO: Task 1 - Implement the function to remove a user from the list
-      return prevUserList.filter(u => u._id !== user._id);
-    };
-
+      prevUserList.filter(u => u._id !== user._id);
     /**
      * Adds a user to the userList, if not present. Otherwise updates the user.
      * @param prevUserList the list of users
@@ -55,9 +53,8 @@ const useUsersListPage = () => {
         const updatedUserList = [...prevUserList];
         updatedUserList[existingUser] = user;
         return updatedUserList;
-      } else {
-        return [user, ...prevUserList];
       }
+      return [user, ...prevUserList];
     };
 
     /**
@@ -76,7 +73,7 @@ const useUsersListPage = () => {
           default:
             return prevList;
         }
-      })
+      });
     };
 
     fetchData();
@@ -89,9 +86,9 @@ const useUsersListPage = () => {
   }, [socket]);
 
   // TODO: Task 1 - Filter the user list based on the userFilter value
-  const filteredUserlist = userList.filter(user => {
-    return user.username.toLowerCase().includes(userFilter.toLowerCase())
-  });
+  const filteredUserlist = userList.filter(user =>
+    user.username.toLowerCase().includes(userFilter.toLowerCase()),
+  );
   return { userList: filteredUserlist, setUserFilter };
 };
 

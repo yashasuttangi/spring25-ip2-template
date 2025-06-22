@@ -34,7 +34,7 @@ const useAuth = (authType: 'login' | 'signup') => {
    */
   const togglePasswordVisibility = () => {
     // TODO - Task 1: Toggle password visibility
-    setShowPassword((prevState) => (!prevState));
+    setShowPassword(prevState => !prevState);
   };
 
   /**
@@ -48,8 +48,8 @@ const useAuth = (authType: 'login' | 'signup') => {
     field: 'username' | 'password' | 'confirmPassword',
   ) => {
     // TODO - Task 1: Handle input changes for the fields
-    const value = e.target.value;
-    switch(field) {
+    const { value } = e.target;
+    switch (field) {
       case 'username':
         setUsername(value);
         break;
@@ -73,12 +73,12 @@ const useAuth = (authType: 'login' | 'signup') => {
   const validateInputs = (): boolean => {
     // TODO - Task 1: Validate inputs for login and signup forms
     // Display any errors to the user
-    if(!username.trim() || !password.trim()) {
+    if (!username.trim() || !password.trim()) {
       setErr('Username and password are required');
       return false;
     }
 
-    if(authType === 'signup' && password !== passwordConfirmation) {
+    if (authType === 'signup' && password !== passwordConfirmation) {
       setErr('Passwords do not match.');
       return false;
     }
@@ -97,7 +97,7 @@ const useAuth = (authType: 'login' | 'signup') => {
     event.preventDefault();
 
     // TODO - Task 1: Validate inputs
-    if(!validateInputs()) {
+    if (!validateInputs()) {
       return;
     }
 
@@ -107,8 +107,8 @@ const useAuth = (authType: 'login' | 'signup') => {
       // TODO - Task 1: Handle the form submission, calling appropriate API routes
       // based on the auth type
       const credentials: UserCredentials = { username: username.trim(), password };
-      if(authType === 'signup') {
-        user = await createUser(credentials)
+      if (authType === 'signup') {
+        user = await createUser(credentials);
       } else {
         user = await loginUser(credentials);
       }

@@ -28,13 +28,9 @@ const GameCard = ({
     Make sure that the button is only displayed for a game that is waiting to start.
     Use the class name 'btn-join-game' for styling. */}
     {game.state.status === 'WAITING_TO_START' && (
-      <button 
-        className='btn-join-game'
-        onClick={() => handleJoin(game.gameID)}
-      >
+      <button className='btn-join-game' onClick={() => handleJoin(game.gameID)}>
         Join Game
       </button>
-
     )}
   </div>
 );

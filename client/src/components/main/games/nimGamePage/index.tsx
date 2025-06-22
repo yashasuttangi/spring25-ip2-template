@@ -36,26 +36,36 @@ const NimGamePage = ({ gameState }: { gameState: GameInstance }) => {
           - Remaining Objects: The number of objects remaining in the pile.
           - Winner: The winner of the game, or "No winner" if the winner is not defined. (Conditionally rendered)
         */}
-        <p><strong>Player 1: </strong> { gameState.state.player1 ?? 'Waiting...'} </p>
-        <p><strong>Player 2: </strong> { gameState.state.player2 ?? 'Waiting...'} </p>
+        <p>
+          <strong>Player 1: </strong> {gameState.state.player1 ?? 'Waiting...'}{' '}
+        </p>
+        <p>
+          <strong>Player 2: </strong> {gameState.state.player2 ?? 'Waiting...'}{' '}
+        </p>
         <p>
           <strong>Current player to move: </strong>
-          {(gameState.state.moves.length % 2 === 0 ? gameState.state.player1 : gameState.state.player2 ) ?? 'Waiting...'} 
+          {(gameState.state.moves.length % 2 === 0
+            ? gameState.state.player1
+            : gameState.state.player2) ?? 'Waiting...'}
         </p>
-        <p><strong>Remaining objects: </strong> { gameState.state.remainingObjects } </p>
-        <p><strong>Winner : </strong> { gameState.state.winners?.join(', ') ?? 'No winner' } </p>
+        <p>
+          <strong>Remaining objects: </strong> {gameState.state.remainingObjects}{' '}
+        </p>
+        <p>
+          <strong>Winner : </strong> {gameState.state.winners?.join(', ') ?? 'No winner'}{' '}
+        </p>
         {/* TODO: Task 2 - Conditionally render game move input for an in progress game */}
-        { gameState.state.status === 'IN_PROGRESS' && (
+        {gameState.state.status === 'IN_PROGRESS' && (
           <div className='nim-game-move'>
             <h3>Make Your Move</h3>
             {/* TODO: Task 2 - Implement the input field which takes a number input.
             Use the class name 'input-move' for styling. */}
-            <input 
+            <input
               type='number'
               className='input-move'
               value={move}
               onChange={handleInputChange}
-              // can restrict the user to input only between 1 and 3 
+              // can restrict the user to input only between 1 and 3
               // min={1}
               // max={3}
             />
@@ -66,9 +76,10 @@ const NimGamePage = ({ gameState }: { gameState: GameInstance }) => {
               className='btn-submit'
               onClick={handleMakeMove}
               disabled={
-                ( gameState.state.moves.length % 2 === 0 ? gameState.state.player1 : gameState.state.player2 ) !== user.username
-              }
-            >
+                (gameState.state.moves.length % 2 === 0
+                  ? gameState.state.player1
+                  : gameState.state.player2) !== user.username
+              }>
               Submit
             </button>
           </div>

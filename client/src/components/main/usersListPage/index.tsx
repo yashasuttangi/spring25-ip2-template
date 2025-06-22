@@ -42,7 +42,7 @@ const UsersListPage = (props: UserListPageProps) => {
       <div id='users_list' className='users_list'>
         {/* TODO: Task 1 - Use a map to display each user using the `UserCardView`
         component. Make sure that the key used is _unique_. */}
-        {userList.map((user) => (
+        {userList.map(user => (
           <UserCardView
             key={user._id}
             user={user}

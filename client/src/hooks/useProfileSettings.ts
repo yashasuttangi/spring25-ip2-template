@@ -69,11 +69,9 @@ const useProfileSettings = () => {
   /**
    * Validate the password fields before attempting to reset.
    */
-  const validatePasswords = () => {
+  const validatePasswords = () =>
     // TODO: Task 1 - Validate the reset password fields and return whether they match
-    return (newPassword.trim() !== '' && newPassword === confirmNewPassword)
-  };
-
+    newPassword.trim() !== '' && newPassword === confirmNewPassword;
   /**
    * Handler for resetting the password
    */
@@ -83,7 +81,7 @@ const useProfileSettings = () => {
     // TODO: Task 1 - Implement the password reset functionality.
     // Validate the password fields, then call the resetPassword service.
     // Display success or error messages accordingly, and clear the password fields.
-    if(!validatePasswords()) {
+    if (!validatePasswords()) {
       setErrorMessage('Passwords do not match or are empty');
       return;
     }
