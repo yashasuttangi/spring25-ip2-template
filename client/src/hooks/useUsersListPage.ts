@@ -38,6 +38,7 @@ const useUsersListPage = () => {
      */
     const removeUserFromList = (prevUserList: User[], user: User) => {
       // TODO: Task 1 - Implement the function to remove a user from the list
+      return prevUserList.filter(u => u._id !== user._id);
     };
 
     /**
@@ -49,6 +50,14 @@ const useUsersListPage = () => {
     const addUserToList = (prevUserList: User[], user: User) => {
       // TODO: Task 1 - Implement the function to add or update a user in the list
       // Add the user to the front of the list if it doesn't already exist
+      const existingUser = prevUserList.findIndex(u => u._id === user._id);
+      if (existingUser !== -1) {
+        const updatedUserList = [...prevUserList];
+        updatedUserList[existingUser] = user;
+        return updatedUserList;
+      } else {
+        return [user, ...prevUserList];
+      }
     };
 
     /**
@@ -58,6 +67,16 @@ const useUsersListPage = () => {
      */
     const handleModifiedUserUpdate = (userUpdate: UserUpdatePayload) => {
       // TODO: Task 1 - Update the user list based on the user update type.
+      setUserList(prevList => {
+        switch (userUpdate.type) {
+          case 'created':
+            return addUserToList(prevList, userUpdate.user);
+          case 'deleted':
+            return removeUserFromList(prevList, userUpdate.user);
+          default:
+            return prevList;
+        }
+      })
     };
 
     fetchData();
@@ -70,7 +89,9 @@ const useUsersListPage = () => {
   }, [socket]);
 
   // TODO: Task 1 - Filter the user list based on the userFilter value
-  const filteredUserlist = [];
+  const filteredUserlist = userList.filter(user => {
+    return user.username.toLowerCase().includes(userFilter.toLowerCase())
+  });
   return { userList: filteredUserlist, setUserFilter };
 };
 
