@@ -28,7 +28,7 @@ const useGamePage = () => {
     // TODO: Task 2 - Implement the logic to leave the current game.
     // - If a game is joined and not over, make the appropriate API call to leave the game, and
     // emit a 'leaveGame' event to the server using the socket.
-    if (joinedGameID && gameState?.state.status !== 'OVER') {
+    if (joinedGameID) {
       try {
         await leaveGame(joinedGameID, user.username);
         socket.emit('leaveGame', joinedGameID);

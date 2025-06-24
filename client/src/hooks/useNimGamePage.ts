@@ -28,8 +28,8 @@ const useNimGamePage = (gameState: GameInstance) => {
         gameID: gameState.gameID,
         move: {
           numObjects: move,
-        }
-      }
+        },
+      },
     });
   };
 
@@ -41,7 +41,7 @@ const useNimGamePage = (gameState: GameInstance) => {
     const { value } = e.target;
     const num = parseInt(value, 10);
 
-    if(!Number.isNaN(num) && num >= 1 && num <= 3) {
+    if (!Number.isNaN(num) && num >= 1 && num <= 3) {
       setMove(num);
     }
   };

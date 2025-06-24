@@ -38,7 +38,7 @@ const useAllGamesPage = () => {
         navigate(`/games/${gameId}`);
       }
     } catch (error) {
-      console.error('Failed to create game: ', error);
+      alert('An error occured while creating the game');
     } finally {
       fetchGames(); // Refresh the list after creating a game
     }

@@ -37,16 +37,24 @@ const NimGamePage = ({ gameState }: { gameState: GameInstance }) => {
           - Winner: The winner of the game, or "No winner" if the winner is not defined. (Conditionally rendered)
         */}
         <p>
-          <strong>Player 1: </strong> {gameState.state.player1 ?? 'Waiting...'}{' '}
+          <strong>Player 1: </strong>{' '}
+          {gameState.state.status === 'OVER' && !gameState.state.player1
+            ? 'Left the game'   // Adding this to show that a user left the game abruptly
+            : (gameState.state.player1 ?? 'Waiting...')}{' '}
         </p>
         <p>
-          <strong>Player 2: </strong> {gameState.state.player2 ?? 'Waiting...'}{' '}
+          <strong>Player 2: </strong>{' '}
+          {gameState.state.status === 'OVER' && !gameState.state.player2
+            ? 'Left the game' // Adding this to show that a user left the game abruptly
+            : (gameState.state.player2 ?? 'Waiting...')}{' '}
         </p>
         <p>
           <strong>Current player to move: </strong>
-          {(gameState.state.moves.length % 2 === 0
-            ? gameState.state.player1
-            : gameState.state.player2) ?? 'Waiting...'}
+          {gameState.state.status === 'OVER'
+            ? 'Game Over'
+            : ((gameState.state.moves.length % 2 === 0
+                ? gameState.state.player1
+                : gameState.state.player2) ?? 'Waiting...')}
         </p>
         <p>
           <strong>Remaining objects: </strong> {gameState.state.remainingObjects}{' '}
