@@ -201,7 +201,7 @@ const userController = (socket: FakeSOSocket) => {
       // TODO: Task 1 - Implement the updateBiography function, including request validation
       const { username, biography } = req.body;
 
-      if(typeof username !== 'string' || typeof biography !== 'string' || !username.trim() || !biography.trim()) {
+      if(typeof username !== 'string' || typeof biography !== 'string' || !username.trim()) {
         res.status(400).send('Invalid request body');
         return;
       }
