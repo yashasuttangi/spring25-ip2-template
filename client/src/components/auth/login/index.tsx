@@ -37,6 +37,7 @@ const Login = () => {
             handleInputChange(e, 'username');
           }}
           required
+          placeholder='Enter username'
         />
         <h4>Please enter your password.</h4>
         {/* TODO: Task 1 - Add an input field for the password input.
@@ -52,6 +53,7 @@ const Login = () => {
             handleInputChange(e, 'password');
           }}
           required
+          placeholder='Enter password'
         />
         <div className='show-password'>
           {/* TODO: Task 1 - Add a checkbox input field for the visibility toggle.

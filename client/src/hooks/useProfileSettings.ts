@@ -82,6 +82,7 @@ const useProfileSettings = () => {
     // Validate the password fields, then call the resetPassword service.
     // Display success or error messages accordingly, and clear the password fields.
     if (!validatePasswords()) {
+      setSuccessMessage('');
       setErrorMessage('Passwords do not match or are empty');
       return;
     }
@@ -92,7 +93,9 @@ const useProfileSettings = () => {
       setSuccessMessage('Password reset successfully');
       setConfirmNewPassword('');
       setNewPassword('');
+      setErrorMessage('');
     } catch (error) {
+      setSuccessMessage('');
       setErrorMessage('Error resetting password');
     } finally {
       setLoading(false);

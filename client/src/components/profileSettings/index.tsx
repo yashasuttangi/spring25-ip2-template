@@ -83,6 +83,7 @@ const ProfileSettings: React.FC = () => {
                   type='text'
                   value={newBio}
                   onChange={e => setNewBio(e.target.value)}
+                  placeholder='Enter biography'
                 />
                 <button
                   className='login-button'

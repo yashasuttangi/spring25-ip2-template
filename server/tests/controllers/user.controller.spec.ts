@@ -299,6 +299,23 @@ describe('Test userController', () => {
     });
 
     // TODO: Task 1 - Add more tests
+    it('should return 500 if getUsersList throws error', async() => {
+      getUsersListSpy.mockRejectedValueOnce(new Error('Database error'));
+
+      const response = await supertest(app).get(`/user/getUsers`);
+      
+      expect(response.status).toBe(500);
+      expect(response.text).toBe('Error when getting users list: Error: Database error');
+    });
+
+    it('should return 500 if getUsersList returns an error object', async() => {
+      getUsersListSpy.mockResolvedValueOnce({ error: 'Unexpected error occured'});
+
+      const response = await supertest(app).get(`/user/getUsers`);
+
+      expect(response.status).toBe(500);
+      expect(response.text).toBe('Error when getting users list: Error: Unexpected error occured');
+    });
   });
 
   describe('DELETE /deleteUser', () => {
@@ -349,5 +366,61 @@ describe('Test userController', () => {
     });
 
     // TODO: Task 1 - Add more tests
+    it('should return 400 if username is missing', async() => {
+      const response = await supertest(app).patch('/user/updateBiography').send({
+        biography: 'biography'
+      });
+
+      expect(response.status).toBe(400);
+      expect(response.text).toBe('Invalid request body');
+    });
+
+    it('should return 400 if biography is missing', async() => {
+      const response = await supertest(app).patch('/user/updateBiography').send({
+        username: mockUser.username
+      });
+
+      expect(response.status).toBe(400);
+      expect(response.text).toBe('Invalid request body');
+    });
+
+    it('should return 200 and allow empty biography string (clear bio)', async() => {
+      updatedUserSpy.mockResolvedValueOnce(mockSafeUser);
+
+      const response = await supertest(app).patch('/user/updateBiography').send({
+        username: mockUser.username,
+        biography: ''
+      });
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual(mockUserJSONResponse);
+      expect(updatedUserSpy).toHaveBeenCalledWith(mockUser.username, {
+        biography: ''
+      });
+    });
+
+    it('should return 500 if updateUser throws an error', async() => {
+      updatedUserSpy.mockRejectedValueOnce(new Error('Database error'));
+
+      const response = await supertest(app).patch('/user/updateBiography').send({
+        username: mockUser.username,
+        biography: 'biography'
+      });
+
+      expect(response.status).toBe(500);
+      expect(response.text).toBe('Error when updating user biography: Error: Database error');
+    });
+
+    it('should return 500 if updateUser returns an error object', async() => {
+      updatedUserSpy.mockResolvedValueOnce({ error: 'User not found' });
+
+      const response = await supertest(app).patch('/user/updateBiography').send({
+        username: mockUser.username,
+        biography: 'biography'
+      });
+      
+      expect(response.status).toBe(500);
+      expect(response.text).toBe('Error when updating user biography: Error: User not found');
+    });
   });
 });

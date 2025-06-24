@@ -91,6 +91,29 @@ describe('getUsersList', () => {
   });
 
   // TODO: Task 1 - Add more tests for getUsersList
+  it('should return an error object if find fails', async() => {
+    jest.spyOn(UserModel, 'find').mockImplementationOnce(() => {
+      throw new Error('Database failure');
+    });
+
+    const result = await getUsersList();
+
+    expect(result).toEqual({ error: 'Error occured when fetching all users: Error: Database failure' });
+  });
+
+  it('should return multiple users if present', async () => {
+    const mockUsers = [
+      safeUser,
+      { ...safeUser, _id: 'id2', username: 'anotherUser' }
+    ];
+
+    mockingoose(UserModel).toReturn(mockUsers, 'find');
+
+    const retrievedUsers = (await getUsersList()) as SafeUser[];
+
+    expect(retrievedUsers.length).toBe(2);
+    expect(retrievedUsers[1].username).toBe('anotherUser');
+  });
 });
 
 describe('loginUser', () => {
