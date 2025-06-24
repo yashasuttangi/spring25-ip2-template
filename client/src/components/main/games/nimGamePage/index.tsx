@@ -39,7 +39,7 @@ const NimGamePage = ({ gameState }: { gameState: GameInstance }) => {
         <p>
           <strong>Player 1: </strong>{' '}
           {gameState.state.status === 'OVER' && !gameState.state.player1
-            ? 'Left the game'   // Adding this to show that a user left the game abruptly
+            ? 'Left the game' // Adding this to show that a user left the game abruptly
             : (gameState.state.player1 ?? 'Waiting...')}{' '}
         </p>
         <p>
