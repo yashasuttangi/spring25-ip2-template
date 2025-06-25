@@ -130,12 +130,12 @@ const userController = (socket: FakeSOSocket) => {
     try {
       const users = await getUsersList();
 
-      if('error' in users) {
+      if ('error' in users) {
         throw new Error(users.error);
       }
       res.status(200).json(users);
     } catch (error) {
-      res.status(500).send(`Error when getting users list: ${error}`)
+      res.status(500).send(`Error when getting users list: ${error}`);
     }
   };
 
@@ -201,14 +201,14 @@ const userController = (socket: FakeSOSocket) => {
       // TODO: Task 1 - Implement the updateBiography function, including request validation
       const { username, biography } = req.body;
 
-      if(typeof username !== 'string' || typeof biography !== 'string' || !username.trim()) {
+      if (typeof username !== 'string' || typeof biography !== 'string' || !username.trim()) {
         res.status(400).send('Invalid request body');
         return;
       }
 
       const updatedUser = await updateUser(username, { biography });
-      
-      if('error' in updatedUser) {
+
+      if ('error' in updatedUser) {
         throw Error(updatedUser.error);
       }
       // Emit socket event for real-time updates
@@ -234,7 +234,7 @@ const userController = (socket: FakeSOSocket) => {
 
   // TODO: Task 1- Add a route for updating a user's biography
   // TODO: Task 1 - Add a route for getting all users
-  router.patch('/updateBiography', updateBiography)
+  router.patch('/updateBiography', updateBiography);
   router.get('/getUsers', getUsers);
 
   return router;

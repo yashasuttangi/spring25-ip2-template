@@ -9,25 +9,24 @@ import { Schema } from 'mongoose';
  */
 // TODO: Task 3 - Define the schema for the Chat
 const chatSchema = new Schema(
-    {
-        participants: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'User',
-                required: true,
-            },
-        ],
-        messages: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'Message',
-            },
-        ],
-    },
-    {
-        collection: 'Chat',
-        timestamps: true
-    }
+  {
+    participants: [
+      {
+        type: String,
+        required: true,
+      },
+    ],
+    messages: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Message',
+      },
+    ],
+  },
+  {
+    collection: 'Chat',
+    timestamps: true,
+  },
 );
 
 export default chatSchema;

@@ -21,7 +21,7 @@ export interface MessageInChat extends Message {
 export interface Chat {
   // TODO: Task 3 - Define the properties of the Chat interface
   _id: ObjectId;
-  participants: ObjectId[];
+  participants: string[];
   messages: MessageInChat[];
   createdAt: Date;
   updatedAt: Date;
@@ -33,7 +33,7 @@ export interface Chat {
  */
 export interface CreateChatPayload {
   // TODO: Task 3 - Define the properties of the CreateChatPayload interface
-  participants: ObjectId[];
+  participants: string[];
   messages: Message[];
 }
 
@@ -79,7 +79,7 @@ export interface AddMessageRequestToChat extends ChatIdRequest {
  */
 export interface AddParticipantPayload {
   // TODO: Task 3 - Define the properties of the AddParticipantPayload interface
-  participantId: ObjectId;
+  participantId: string;
 }
 
 /**
