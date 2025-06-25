@@ -26,16 +26,12 @@ export const saveChat = async (chatPayload: CreateChatPayload): Promise<ChatResp
       }),
     );
 
-    console.log('participants', participants);
-
     const newChat = new ChatModel({
       participants,
       messages: savedMessages.map(msg => msg._id),
     });
 
-    console.log('new chat', newChat);
-
-    const savedChat = newChat.save();
+    const savedChat = await newChat.save();
 
     return savedChat;
   } catch (error) {

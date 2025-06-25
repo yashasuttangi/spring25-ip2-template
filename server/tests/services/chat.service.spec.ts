@@ -8,7 +8,7 @@ import {
   saveChat,
   createMessage,
   addMessageToChat,
-  getChat,
+  // getChat, // Unused import - commenting to avoid lint warning
   addParticipantToChat,
   getChatsByParticipants,
 } from '../../services/chat.service';
@@ -87,6 +87,36 @@ describe('Chat service', () => {
       const result = await saveChat(mockChatPayload);
 
       expect(result).toEqual({ error: 'Failed to save chat' });
+    });
+
+    it('should return error if saving chat document fails', async () => {
+      mockingoose(MessageModel).toReturn(
+        {
+          _id: new mongoose.Types.ObjectId(),
+          msg: 'Hello',
+          msgFrom: 'user',
+          msgDateTime: new Date(),
+          type: 'direct',
+        },
+        'create',
+      );
+
+      mockingoose(ChatModel).toReturn(new Error('Chat creation failed'), 'save');
+
+      const result = await saveChat(mockChatPayload);
+
+      expect(result).toEqual({ error: 'Failed to save chat' });
+    });
+
+    it('should throw an error if participants are less than 2', async () => {
+      const badPayload = {
+        participants: ['user1'],
+        messages: [],
+      };
+
+      await expect(saveChat(badPayload as CreateChatPayload)).rejects.toThrow(
+        'Atleast two participants are required to create a chat',
+      );
     });
   });
 

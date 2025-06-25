@@ -38,7 +38,7 @@ const useAllGamesPage = () => {
         navigate(`/games/${gameId}`);
       }
     } catch (error) {
-      alert('An error occured while creating the game');
+      alert('An error occured while creating the game'); // Keeping an alert in the catch block as there is no set error state in this hook
     } finally {
       fetchGames(); // Refresh the list after creating a game
     }

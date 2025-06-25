@@ -22,6 +22,7 @@ const DirectMessage = () => {
     handleChatSelect,
     handleUserSelect,
     handleCreateChat,
+    error,
   } = useDirectMessage();
 
   return (

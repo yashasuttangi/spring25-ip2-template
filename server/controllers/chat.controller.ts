@@ -70,7 +70,7 @@ const chatController = (socket: FakeSOSocket) => {
     // TODO: Task 3 - Implement the createChatRoute function
     // Emit a `chatUpdate` event to share the creation of a new chat
 
-    if (!isCreateChatRequestValid(req)) {
+    if (!isCreateChatRequestValid(req) || req.body.participants.length < 2) {
       res.status(400).send('Invalid request body');
       return;
     }
@@ -117,6 +117,7 @@ const chatController = (socket: FakeSOSocket) => {
 
     if (!isValidObjectId(chatId)) {
       res.status(400).send('Invalid chat ID');
+      return;
     }
 
     try {
@@ -137,8 +138,15 @@ const chatController = (socket: FakeSOSocket) => {
         return;
       }
 
+      const populateChat = await populateDocument(chat._id.toString(), 'chat');
+
+      if ('error' in populateChat) {
+        res.status(500).send('Failed to populate updated chat');
+        return;
+      }
+
       const chatUpdatePayload: ChatUpdatePayload = {
-        chat,
+        chat: populateChat as Chat,
         type: 'newMessage',
       };
 
@@ -162,7 +170,7 @@ const chatController = (socket: FakeSOSocket) => {
     // TODO: Task 3 - Implement the getChatRoute function
     const { chatId } = req.params;
 
-    if (!chatId || !isValidObjectId(chatId)) {
+    if (!chatId) {
       res.status(400).send('Invalid chat ID');
       return;
     }
@@ -175,7 +183,8 @@ const chatController = (socket: FakeSOSocket) => {
         return;
       }
 
-      res.status(200).json(chat);
+      const populateChat = await populateDocument(chatId, 'chat');
+      res.status(200).json(populateChat);
     } catch (error) {
       res.status(500).send('Error occured while fetching data');
     }
@@ -203,20 +212,17 @@ const chatController = (socket: FakeSOSocket) => {
     try {
       const chats = await getChatsByParticipants([username]);
 
-      const populatedChats: Chat[] = [];
+      const populateChats = await Promise.all(
+        chats.map(async chat => {
+          const populated = await populateDocument(chat._id.toString(), 'chat');
+          if ('error' in populated) {
+            throw new Error('Failed populating chats');
+          }
+          return populated as Chat;
+        }),
+      );
 
-      for (const chat of chats) {
-        const populated = await populateDocument(chat._id.toString(), 'chat');
-
-        if ('error' in populated) {
-          res.status(500).send('Error retrieving chat: Failed populating chats');
-          return;
-        }
-
-        populatedChats.push(populated as Chat);
-      }
-
-      res.status(200).json(populatedChats);
+      res.status(200).json(populateChats);
     } catch (error) {
       res.status(500).send(`Unexpected error during chat retrieval: ${error}`);
     }
@@ -238,14 +244,13 @@ const chatController = (socket: FakeSOSocket) => {
     // TODO: Task 3 - Implement the addParticipantToChatRoute function
     const { chatId } = req.params;
     const { participantId } = req.body;
-
     if (!chatId || !isValidObjectId(chatId)) {
       res.status(400).send('Invalid chat ID');
       return;
     }
 
     if (!isAddParticipantRequestValid(req)) {
-      res.status(400).send('Invalid chat ID');
+      res.status(400).send('Invalid participant ID');
       return;
     }
 
@@ -254,6 +259,7 @@ const chatController = (socket: FakeSOSocket) => {
 
       if ('error' in chat) {
         res.status(500).send(chat.error);
+        return;
       }
 
       res.status(200).json(chat);
