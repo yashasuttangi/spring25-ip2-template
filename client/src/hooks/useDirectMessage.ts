@@ -139,7 +139,9 @@ const useDirectMessage = () => {
 
       switch (chatUpdate.type) {
         case 'created':
-          setChats(prev => [...prev, chatUpdate.chat]);
+          if (chatUpdate.chat.participants.includes(user.username)) {
+            setChats(prev => [...prev, chatUpdate.chat]);
+          }
           break;
         case 'newMessage':
           if (selectedChat && selectedChat._id?.toString() === chatUpdate.chat._id?.toString()) {
